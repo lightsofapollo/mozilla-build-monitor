@@ -12,7 +12,7 @@ function buildQueue(queue) {
 
     binds: [
       // listen to all messages from the build exchange
-      [queue, 'org.mozilla.exchange.build', '#']
+      [queue, 'org.mozilla.exchange.build', 'build.#.finished']
     ]
   });
 }
