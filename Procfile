@@ -1,1 +1,1 @@
-worker: ./bin/buildmonitor
+worker: ./bin/buildmonitor start
