@@ -1,0 +1,51 @@
+#! /usr/bin/env node
+var QUEUE_NAME = process.env.BUILD_MONITOR_QUEUE ||
+                 'node-build-monitor';
+
+var CONNECT_URL = process.env.BUILD_MONITOR_AMQP ||
+                  // no slash is really important
+                  'amqp://public:public@pulse.mozilla.org:5672';
+
+var program = require('commander');
+var amqplib = require('amqplib');
+
+function connectionDectorator(method) {
+  return function() {
+    amqplib.connect(CONNECT_URL).then(
+      function connectedToPulse(connection) {
+        method(connection);
+      },
+      function failedToConnect(err) {
+        console.log('failed to connect to pulse');
+        console.log(err.stack);
+        process.exit(1);
+      }
+    );
+  };
+}
+
+program
+  .command('start')
+  .description('start listening for builds')
+  .action(connectionDectorator(function(connection) {
+    var worker = require('../worker');
+    worker(QUEUE_NAME, connection);
+  }));
+
+program
+  .command('status')
+  .description('get the current status of the build monitor queue')
+  .action(connectionDectorator(function(connection) {
+    var status = require('../status');
+    status (QUEUE_NAME, connection);
+  }));
+
+program
+  .command('delete')
+  .description('remove the current queue')
+  .action(connectionDectorator(function(connection) {
+    var destroy = require('../destroy');
+    destroy(QUEUE_NAME, connection);
+  }));
+
+program.parse(process.argv);

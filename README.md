@@ -1,4 +1,9 @@
-mozilla-build-monitor
-=====================
+# mozilla-build-monitor
 
-Build monitor
+## Usage
+
+See:
+
+```sh
+./bin/buildmonitor --help
+```
