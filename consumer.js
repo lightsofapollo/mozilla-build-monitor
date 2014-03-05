@@ -62,21 +62,27 @@ BuildConsumer.prototype = {
       tmp.file({prefix: fileName}, function(err, path) {
         if (err) {
           console.log('Failed to create tmp file', err);
-          reject(err);
-        } else {
-          var stream = fs.createWriteStream(path);
-          console.log('fetching file from', props.build_url);
-          https.get(props.build_url, function(res) {
-            upload(fileName, stream, function(err, data) {
-              console.log('RETURN FROM S3', err, data);
-              if (err) {
-                resolve(err);
-              } else {
-                resolve(data);
-              }
-            });
-          });
+          return reject(err);
         }
+
+        var stream = fs.createWriteStream(path);
+        console.log('fetching file from', props.build_url);
+
+        if (!props.build_url) {
+          console.log('build url was not found');
+          return resolve();
+        }
+
+        https.get(props.build_url, function(res) {
+          upload(fileName, stream, function(err, data) {
+            console.log('RETURN FROM S3', err, data);
+            if (err) {
+              resolve(err);
+            } else {
+              resolve(data);
+            }
+          });
+        });
       });
     });
   }

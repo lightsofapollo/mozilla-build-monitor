@@ -12,6 +12,7 @@ function worker(queue, connection) {
     process.env.BUILD_MONITOR_DURABLE === 'true'
   );
   schema.define(connection).then(function() {
+    console.log(consumer, '<<consumer');
     debug('got connection!');
     // consume the queue
     var consumer = new Consumer(connection);
