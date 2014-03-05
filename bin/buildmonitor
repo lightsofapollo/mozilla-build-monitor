@@ -8,13 +8,15 @@ var CONNECT_URL = process.env.BUILD_MONITOR_AMQP ||
 
 var program = require('commander');
 var amqplib = require('amqplib');
+var Promise = require('promise');
 
 function connectionDectorator(method) {
   return function() {
-    amqplib.connect(CONNECT_URL).then(
+    Promise.from(amqplib.connect(CONNECT_URL)).then(
       function connectedToPulse(connection) {
         method(connection);
-      },
+      }
+    ).catch(
       function failedToConnect(err) {
         console.log('failed to connect to pulse');
         console.log(err.stack);
@@ -28,6 +30,7 @@ program
   .command('start')
   .description('start listening for builds')
   .action(connectionDectorator(function(connection) {
+    console.log('WTFS');
     var worker = require('../worker');
     worker(QUEUE_NAME, connection);
   }));

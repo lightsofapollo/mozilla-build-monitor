@@ -26,6 +26,7 @@
     "amqplib": "~0.1.3",
     "amqpworkers": "0.0.3",
     "commander": "~2.1.0",
-    "debug": "~0.7.4"
+    "debug": "~0.7.4",
+    "promise": "~4.0.0"
   }
 }
