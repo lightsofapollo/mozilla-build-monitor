@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+- '0.10'
+script: echo "I haz no tests deploy me now!"
+deploy:
+  provider: heroku
+  api_key:
+    secure: pDwPoBPTWhqMGihgK6SdecWaX6UQw8glJ2NWFWAK3EUszaNj0BHHUb0gDRd4A3Oe+3VNh5Z4sDHPInh0FjIXDuAkg1l8QQBURudAENwR0t3NsgBzwnkUwSgYVz45xzsdX72M3kUS50CcSv44fv+/Qm10LtCzTdkyYN6UUl8npxA=
+  app: node-mozilla-build-monitor
+  on:
+    repo: lightsofapollo/mozilla-build-monitor
