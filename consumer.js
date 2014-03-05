@@ -61,7 +61,7 @@ BuildConsumer.prototype = {
         upload(fileName, res, function(err, data) {
           console.log('RETURN FROM S3', err, data);
           if (err) {
-            reject(err);
+            resolve(err);
           } else {
             resolve(data);
           }

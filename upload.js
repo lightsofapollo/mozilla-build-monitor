@@ -6,5 +6,5 @@ var s3 = new AWS.S3();
 
 module.exports = function(fileName, fileData, callback) {
   console.log('Uploading', fileName, AWS.config);
-  s3.getObject({Bucket: S3_BUCKET, Key: fileName}, callback);
+  s3.getObject({Bucket: S3_BUCKET, Key: fileName, Body: fileData}, callback);
 };
