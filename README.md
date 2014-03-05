@@ -16,3 +16,9 @@ See:
 ```sh
 ./bin/buildmonitor --help
 ```
+
+### Configuration
+
+  - `BUILD_MONITOR_QUEUE` - amqp queue name
+  - `BUILD_MONITOR_AMQP` - amqp credentials
+  - `BUILD_MONITOR_DURABLE` - when set to 'true' queue will be durable.
