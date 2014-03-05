@@ -4,7 +4,7 @@ function status(queue, connection) {
   Promise.from(connection.createChannel()).then(function(channel) {
     return channel.checkQueue(queue).then(function(info) {
       console.log(info);
-      channel.close();
+      connection.close();
     });
   }).catch(function(err) {
     console.log('failed to get queue stats');
