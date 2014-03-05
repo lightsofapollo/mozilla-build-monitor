@@ -1,11 +1,33 @@
 var Schema = require('amqpworkers/schema');
 var debug = require('debug')('build queue');
 
-function buildQueue(queue) {
+var MESSAGE_TTL_MS =
+   // one minute
+   (1000 * 60) *
+   // one hour
+   60 *
+   // four hours
+   4;
+
+function buildQueue(queue, durable) {
   debug('building schema for: ', queue);
+
+  var queueConfig = {
+    messageTtl: MESSAGE_TTL_MS
+  };
+
+  if (durable) {
+    queueConfig.durable = true;
+  } else {
+    queueConfig.autoDelete = true;
+    queueConfig.durable = false;
+  }
+
+  debug('queue config', queueConfig);
+
   return new Schema({
     queues: [
-      [queue, { durable: true }]
+      [queue, queueConfig]
     ],
 
     exchanges: [],

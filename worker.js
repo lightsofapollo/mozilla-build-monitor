@@ -6,7 +6,11 @@ var debug = require('debug')('consumer');
 function worker(queue, connection) {
   debug('start worker');
   // assert queue and define it
-  var schema = schemaFactory(queue);
+  var schema = schemaFactory(
+    queue,
+    // when true uses durable
+    process.env.BUILD_MONITOR_DURABLE === 'true'
+  );
   schema.define(connection).then(function() {
     debug('got connection!');
     // consume the queue
