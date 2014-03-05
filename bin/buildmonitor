@@ -10,8 +10,12 @@ var program = require('commander');
 var amqplib = require('amqplib');
 var Promise = require('promise');
 
+
 function connectionDectorator(method) {
   return function() {
+    console.log('connection to amqp');
+    console.log('current queue is %s', QUEUE_NAME);
+
     Promise.from(amqplib.connect(CONNECT_URL)).then(
       function connectedToPulse(connection) {
         method(connection);
