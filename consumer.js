@@ -31,7 +31,7 @@ BuildConsumer.prototype = {
     var meta = message._meta;
 
     if (!payload || !payload.build || !payload.build.properties) {
-      //console.log("Unrecognized payload", JSON.strinify(payload, null, 4));
+      console.log("Unrecognized payload", JSON.strinify(payload, null, 4));
       return true;
     }
 
@@ -41,17 +41,17 @@ BuildConsumer.prototype = {
     }, {});
 
     if (platforms.indexOf(props.platform) === -1) {
-      //console.log('Unsupported platform', props.platform);
+      console.log('Unsupported platform', props.platform);
       return true;
     }
 
     if (props.branch !== 'mozilla-inbound') {
-      //console.log('Unsupported branch', props.branch);
+      console.log('Unsupported branch', props.branch);
       return true;
     }
 
     if (products.indexOf(props.product) === -1) {
-      //console.log('Unsupported product', props.product);
+      console.log('Unsupported product', props.product);
       return true;
     }
 
