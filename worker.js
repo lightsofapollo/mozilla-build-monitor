@@ -1,11 +1,14 @@
 var schemaFactory = require('./schema');
 var Consumer = require('./consumer');
 var Promise = require('promise');
+var debug = require('debug')('consumer');
 
 function worker(queue, connection) {
+  debug('start worker');
   // assert queue and define it
   var schema = schemaFactory(queue);
   schema.define(connection).then(function() {
+    debug('got connection!');
     // consume the queue
     var consumer = new Consumer(connection);
     return consumer.consume(queue, {

@@ -1,6 +1,8 @@
 var Schema = require('amqpworkers/schema');
+var debug = require('debug')('build queue');
 
 function buildQueue(queue) {
+  debug('building schema for: ', queue);
   return new Schema({
     queues: [
       [queue, { durable: true }]
