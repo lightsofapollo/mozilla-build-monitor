@@ -3,7 +3,13 @@
   "version": "0.0.0",
   "description": "Mozilla build monitor hacks",
   "main": "index.js",
+  "bin": {
+    "buildmonitor": "./buildmonitor"
+  },
   "scripts": {
+    "start": "./bin/buildmonitor start",
+    "destroy": "./bin/buildmonitor destroy",
+    "status": "./bin/buildmonitor status",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
