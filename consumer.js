@@ -2,7 +2,9 @@ var Consumer = require('amqpworkers/consumer');
 var debug = require('debug')('consumer');
 var upload = require('./upload');
 var Promise = require('promise');
-var http = require('http');
+var https = require('https');
+var fs = require('fs');
+var tmp = require('tmp');
 
 var platforms = [
   'macosx64',
@@ -55,17 +57,26 @@ BuildConsumer.prototype = {
       return true;
     }
 
+    var fileName = props.product + '-' + props.platform;
     return new Promise(function(resolve, reject) {
-      http.get(props.build_url, function(res) {
-        var fileName = props.product + '-' + props.platform;
-        upload(fileName, res, function(err, data) {
-          console.log('RETURN FROM S3', err, data);
-          if (err) {
-            resolve(err);
-          } else {
-            resolve(data);
-          }
-        });
+      tmp.file({prefix: fileName}, function(err, path) {
+        if (err) {
+          console.log('Failed to create tmp file', err);
+          reject(err);
+        } else {
+          var stream = fs.createWriteStream(path);
+          console.log('fetching file from', props.build_url);
+          https.get(props.build_url, function(res) {
+            upload(fileName, stream, function(err, data) {
+              console.log('RETURN FROM S3', err, data);
+              if (err) {
+                resolve(err);
+              } else {
+                resolve(data);
+              }
+            });
+          });
+        }
       });
     });
   }
